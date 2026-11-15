@@ -3,10 +3,12 @@
 <head>
 <meta charset="utf-8">
 <title>アニマル・オーバードライブ</title>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="ANIMAL OD">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
-html,body{width:100%;height:100%;overflow:hidden;background:#10141c;color:#fff;font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP","Segoe UI",system-ui,sans-serif;touch-action:none}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+button,#ring,#knob,canvas,#hud *{touch-action:none}#ov button{touch-action:manipulation}
+html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%;background:#10141c;color:#fff;font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP","Segoe UI",system-ui,sans-serif;touch-action:none}
 #gl{position:fixed;inset:0;width:100%;height:100%;display:block}
 #hud{position:fixed;inset:0;pointer-events:none;display:none}
 /* top bars */
@@ -183,7 +185,7 @@ input.code{font-size:22px;width:150px;text-align:center;padding:8px;background:#
 <div id="ov"><div class="in" id="ovIn"><h1>ANIMAL <span>OVERDRIVE</span></h1><div class="sub">LOADING…</div><div id="ld"><div id="ldB"></div></div></div></div>
 <div id="mmBar"><span id="mmT"></span><button id="mmX">やめる</button></div>
 <div id="toast"></div>
-<script type="module" src="./fb.js"></script>
-<script type="module" src="./game.js"></script>
+<script type="module" src="./fb.js?v=1794750965"></script>
+<script type="module" src="./game.js?v=1794750965"></script>
 </body>
 </html>

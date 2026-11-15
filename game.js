@@ -43,6 +43,17 @@ addEventListener('resize', resize); resize();
 const OPT = { name: 'プレイヤー', vol: 0.8, bgm: 0.55, cam: 1, low: false, lay: {} };
 /* ---------- audio ---------- */
 let AC = null, master = null, noiseBuf = null;
+/* iPad: 連打でのダブルタップ拡大・ピンチ拡大・長押しメニューを止める */
+{ let lastTE = 0; const inOv = e => e.target && e.target.closest && e.target.closest('#ov,#gc,#ed');
+  document.addEventListener('touchend', e => { const t = performance.now(); if (t - lastTE < 450 && !inOv(e)) e.preventDefault(); lastTE = t; }, { passive: false });
+  document.addEventListener('touchstart', e => { if (!inOv(e) && e.cancelable) e.preventDefault(); }, { passive: false });
+  document.addEventListener('touchstart', e => { if (e.touches.length > 1 && inOv(e) && e.cancelable) e.preventDefault(); }, { passive: false });
+  document.addEventListener('touchmove', e => { if ((e.scale && e.scale !== 1) || (!inOv(e) && e.cancelable)) e.preventDefault(); }, { passive: false });
+  for (const ev of ['gesturestart', 'gesturechange', 'gestureend', 'dblclick', 'contextmenu']) document.addEventListener(ev, e => e.preventDefault(), { passive: false }); }
+/* それでも拡大されたら自動で元に戻す（viewport を書き直すと iOS が倍率をリセットする） */
+if (window.visualViewport) { const vm = document.querySelector('meta[name=viewport]'), base = vm ? vm.content : ''; let busy = false;
+  const unzoom = () => { if (!vm || busy || visualViewport.scale <= 1.02) return; busy = true; vm.content = 'width=device-width,initial-scale=0.99,minimum-scale=0.99,maximum-scale=0.99,user-scalable=no'; setTimeout(() => { vm.content = base; window.scrollTo(0, 0); busy = false; }, 60); };
+  visualViewport.addEventListener('resize', () => setTimeout(unzoom, 250)); setInterval(unzoom, 1500); }
 addEventListener('pointerdown', () => initAudio(), { passive: true }); addEventListener('keydown', () => initAudio());
 function initAudio() { if (AC) { if (AC.state === 'suspended') AC.resume(); return; } try { AC = new (window.AudioContext || window.webkitAudioContext)(); master = AC.createGain(); master.gain.value = OPT.vol; const cmp = AC.createDynamicsCompressor(); master.connect(cmp); cmp.connect(AC.destination); noiseBuf = AC.createBuffer(1, AC.sampleRate, AC.sampleRate); const c = noiseBuf.getChannelData(0); for (let i = 0; i < c.length; i++) c[i] = Math.random() * 2 - 1; bgmInit(); } catch (e) { AC = null; } }
 /* ---------- BGM（その場で合成） ---------- */
